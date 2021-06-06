@@ -44,6 +44,44 @@ A full list of Xcode and SDK versions can be found on [Wikipedia](https://en.wik
    shasum -s -c MacOSX10.11.4.sdk.sha256; echo rc=$?
    ```
 
+## MacOSX10.13.4.sdk (17E189)
+
+1. Download `Xcode_9.4.1.xip` and verify checksum.
+
+   ```bash
+   # expected checksum: 7a338620ed3d225f675a74eb41925937fb90478b510b65b2b32e89c26be23124
+   shasum -a 256 Xcode_9.4.1.xip
+   ```
+
+1. Extract to a location of your choice with `xip -x Xcode_9.4.1.xip` and verify the version numbers.
+
+   ```bash
+   # expected output: 9.4.1
+   /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" Xcode.app/Contents/Info.plist
+   # expected output: 9F1027a
+   /usr/libexec/PlistBuddy -c "Print :DTXcodeBuild" Xcode.app/Contents/Info.plist
+   # expected output: 10.13.4
+   /usr/libexec/PlistBuddy -c "Print :ProductVersion" Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/CoreServices/SystemVersion.plist
+   # expected output: 17E189
+   /usr/libexec/PlistBuddy -c "Print :ProductBuildVersion" Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/CoreServices/SystemVersion.plist
+   ```
+
+1. Create checksums of all files inside the SDK.
+
+   ```bash
+   cd Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+   find MacOSX10.13.sdk/ -type f -exec shasum -a 256 {} + | LC_ALL=C sort > $HOME/MacOSX10.13.4.sdk.sha256
+   # expected checksum: eb09dd197b055e6d58061499bf54d9bebc8f572ab24e2e42424fa24991f050a2
+   shasum -a 256 $HOME/MacOSX10.13.4.sdk.sha256
+   ```
+
+1. Wherever you need to verify the SDK, copy `MacOSX10.13.4.sdk.sha256` to the SDK's parent folder, `cd` to the parent folder and run the following command.
+
+   ```bash
+   # expected output: rc=0
+   shasum -s -c MacOSX10.13.4.sdk.sha256; echo rc=$?
+   ```
+
 ## License
 
 [MIT](LICENSE)
