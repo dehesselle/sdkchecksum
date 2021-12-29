@@ -32,8 +32,8 @@ A full list of Xcode and SDK versions can be found on [Wikipedia](https://en.wik
 
    ```bash
    cd /Volumes/Xcode/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
-   find MacOSX10.11.sdk -type f -exec shasum -a 256 {} + | LC_ALL=C sort > $HOME/MacOSX10.11.4.sdk.sha256
-   # expected checksum: 52e2abff5e6411f684e3ecc266b20f10867df7e51d14247e473799efe6b6fcc2
+   find MacOSX10.11.sdk/ -type f -exec shasum -a 256 {} + | LC_ALL=C sort > $HOME/MacOSX10.11.4.sdk.sha256
+   # expected checksum: aefc4fa52bf4b73748cfb98dc09d5a1888bb2389bb6b56407ced437f26f3b247
    shasum -a 256 $HOME/MacOSX10.11.4.sdk.sha256
    ```
 
