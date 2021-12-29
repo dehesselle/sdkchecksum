@@ -61,9 +61,9 @@ A full list of Xcode and SDK versions can be found on [Wikipedia](https://en.wik
    # expected output: 9F1027a
    /usr/libexec/PlistBuddy -c "Print :DTXcodeBuild" Xcode.app/Contents/Info.plist
    # expected output: 10.13.4
-   /usr/libexec/PlistBuddy -c "Print :ProductVersion" Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/CoreServices/SystemVersion.plist
+   /usr/libexec/PlistBuddy -c "Print :ProductVersion" Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/CoreServices/SystemVersion.plist
    # expected output: 17E189
-   /usr/libexec/PlistBuddy -c "Print :ProductBuildVersion" Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/CoreServices/SystemVersion.plist
+   /usr/libexec/PlistBuddy -c "Print :ProductBuildVersion" Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/CoreServices/SystemVersion.plist
    ```
 
 1. Create checksums of all files inside the SDK.
