@@ -1,0 +1,55 @@
+# This is only a proof of concept. I cannot use it as I would require to run
+# this workflow as an action/step level and not job level, as I want to verify
+# something that a previous step has downloaded and installed.
+
+# Example for calling this workflow:
+#
+#  call_sdkchecksum_verify:
+#    uses: dehesselle/sdkchecksum/.github/workflows/verify.yml@master
+#    with:
+#      SDKROOT: ${{ needs.prepare.outputs.sdkroot }}
+#      SHA256_FILE: MacOSX10.11.4.sdk.sha256
+#    needs: prepare
+
+name: verify
+on:
+  workflow_call:
+    inputs:
+      SDKROOT:
+        description: "path to SDK you want to verify"
+        default: false
+        required: true
+        type: string
+      SHA256_FILE:
+        description: "checksum file to test SDK against"
+        default: false
+        required: true
+        type: string
+
+jobs:
+  verify:
+    runs-on: macos-10.15
+    steps:
+
+      - name: get checksum files
+        uses: actions/checkout@v3
+        with:
+          repository: dehesselle/sdkchecksum
+          path: sdkchecksum
+          clean: false
+
+      - name: verify SDK against checksum file
+        env:
+          SDKROOT: ${{ inputs.SDKROOT }}
+          SHA256_FILE: ${{ inputs.SHA256_FILE }}
+        run: |
+          shasum -a 256 sdkchecksum/$SHA256_FILE
+          cd $(dirname $SDKROOT)
+          if shasum -s -c $GITHUB_WORKSPACE/sdkchecksum/$SHA256_FILE; then
+            echo "ok - SDK verified"
+            rm -rf $GITHUB_WORKSPACE/sdkchecksum
+            exit 0
+          else
+            echo "error - SDK verification failed"
+            exit 1
+          fi
