@@ -120,6 +120,44 @@ A full list of Xcode and SDK versions can be found on [Wikipedia](https://en.wik
    shasum -s -c MacOSX10.15.6.sdk.sha256; echo rc=$?
    ```
 
+## MacOSX11.3.sdk (20E214)
+
+1. Download `Xcode_13.xip` and verify checksum.
+
+   ```bash
+   # expected checksum: 1d8257750a4e0333a2b372b32381be5ec9b29704c8a0d44ce2e6d26d1cf4301e
+   shasum -a 256 Xcode_13.xip
+   ```
+
+1. Extract to a location of your choice with `xip -x Xcode_13.xip` and verify the version numbers.
+
+   ```bash
+   # expected output: 13.0
+   /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" Xcode.app/Contents/Info.plist
+   # expected output: 13A229 
+   /usr/libexec/PlistBuddy -c "Print :DTXcodeBuild" Xcode.app/Contents/Info.plist
+   # expected output: 11.3
+   /usr/libexec/PlistBuddy -c "Print :ProductVersion" Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk/System/Library/CoreServices/SystemVersion.plist
+   # expected output: 20E214
+   /usr/libexec/PlistBuddy -c "Print :ProductBuildVersion" Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk/System/Library/CoreServices/SystemVersion.plist
+   ```
+
+1. Create checksums of all files inside the SDK.
+
+   ```bash
+   cd Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+   find MacOSX11.3.sdk/ -type f -exec shasum -a 256 {} + | LC_ALL=C sort > $HOME/MacOSX11.3.sdk.sha256
+   # expected checksum: a7d5c126f2c129e65d666683ce99d8b9c01c6987979a551ec599782675bfcaff
+   shasum -a 256 $HOME/MacOSX11.3.sdk.sha256
+   ```
+
+1. Wherever you need to verify the SDK, copy `MacOSX11.3.sdk.sha256` to the SDK's parent folder, `cd` to the parent folder and run the following command.
+
+   ```bash
+   # expected output: rc=0
+   shasum -s -c MacOSX11.3.sdk.sha256; echo rc=$?
+   ```
+
 ## License
 
 [MIT](LICENSE)
