@@ -20,8 +20,8 @@
       if shasum -s -c $CI_PROJECT_DIR/sdkchecksum/$(basename $SDKROOT).sha256; then
         echo "ok - SDK verified"
         cd -
+        rm -rf sdkchecksum
       else
         echo "error - SDK verification failed"
         exit 1
       fi
-
