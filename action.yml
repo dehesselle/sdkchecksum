@@ -1,0 +1,38 @@
+# SPDX-FileCopyrightText: 2022 René de Hesselle <dehesselle@web.de>
+#
+# SPDX-License-Identifier: MIT
+
+# Use this action to verify an SDK against a checksum file.
+#
+#   - name: verify SDK
+#     uses: dehesselle/sdkchecksum@develop
+#     with:
+#       SDKROOT: /opt/sdks/MacOSX10.13.sdk
+#       SHA256_FILE: MacOSX10.13.4.sdk.sha256
+
+name: verify SDK
+description: verify that SDK is genuine
+inputs:
+  SDKROOT:
+    description: path to SDK you want to verify
+    required: true
+  SHA256_FILE:
+    description: checksum file to verify SDK against
+    required: true
+runs:
+  using: composite
+  steps:
+    - env:
+        SHA256_FILE: ${{ github.action_path }}/${{ inputs.SHA256_FILE }}
+        SDKROOT: ${{ inputs.SDKROOT }}
+      run: |
+        shasum -a 256 $SHA256_FILE
+        cd $(dirname $SDKROOT)
+        if shasum -s -c $SHA256_FILE; then
+          echo "ok - $SDKROOT verified"
+          exit 0
+        else
+          echo "error - $SDKROOT failed verification"
+          exit 1
+        fi
+      shell: bash
